@@ -25,8 +25,10 @@ import { useEffect, useState, type FormEvent } from "react";
 
 import heroImage from "../assets/plate-heat-exchanger-hero.jpg";
 import industriesImage from "../assets/industrial-applications.jpg";
-import brandSymbolAsset from "../assets/arsam-logo-symbol-transparent.png.asset.json";
-import brandLockupAsset from "../assets/arsam-logo-full-transparent.png.asset.json";
+import brandSymbolUrl from "../assets/arsam-logo-symbol.png";
+const brandSymbolAsset = { url: brandSymbolUrl };
+import brandLockupUrl from "../assets/arsam-logo-full.png";
+const brandLockupAsset = { url: brandLockupUrl };
 import { Button } from "../components/ui/button";
 
 export const Route = createFileRoute("/")({
