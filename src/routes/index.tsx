@@ -315,16 +315,16 @@ function Index() {
               return (
                 <article key={service.title} className="service-card reveal group relative flex h-full flex-col rounded-xl border border-border bg-background p-7 transition-all" style={{ animationDelay: `${index * 90}ms` }}>
                   <div className="flex items-start justify-between">
+                    <span className="text-3xl font-light text-muted-foreground/40 group-hover:text-primary-foreground/30">{service.number}</span>
                     <span className="grid size-12 place-items-center rounded-lg bg-secondary text-primary transition-colors group-hover:bg-primary-foreground/10 group-hover:text-primary-foreground">
                       <Icon className="size-6" strokeWidth={1.7} />
                     </span>
-                    <span className="text-3xl font-light text-muted-foreground/40 group-hover:text-primary-foreground/30">{service.number}</span>
                   </div>
                   <h3 className="mt-8 text-xl font-extrabold leading-8 group-hover:text-primary-foreground">{service.title}</h3>
                   <p className="mt-4 text-sm leading-7 text-muted-foreground group-hover:text-primary-foreground/75">{service.description}</p>
-                  <div className="mt-auto flex items-center gap-2 pt-6 text-xs font-bold text-primary opacity-70 transition-opacity group-hover:text-safety group-hover:opacity-100">
+                  <a href="#contact" className="mt-auto flex items-center gap-2 pt-6 text-xs font-bold text-primary opacity-70 transition-opacity hover:opacity-100 group-hover:text-safety group-hover:opacity-100">
                     بررسی نیاز پروژه <ArrowUpLeft className="size-4" />
-                  </div>
+                  </a>
                 </article>
               );
             })}
@@ -405,9 +405,9 @@ function Index() {
           </div>
           <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {industryGroups.map(({ icon: Icon, title, items }, index) => (
-              <div key={title} className="reveal rounded-xl border border-border bg-surface p-7 transition-all duration-300 hover:-translate-y-1 hover:bg-background hover:shadow-lg" style={{ animationDelay: `${index * 80}ms` }}>
+              <div key={title} className="reveal overflow-hidden rounded-xl border border-industrial/15 bg-gradient-to-bl from-secondary via-surface to-background p-7 transition-all duration-300 hover:-translate-y-1 hover:border-industrial/30 hover:shadow-lg" style={{ animationDelay: `${index * 80}ms` }}>
                 <div className="flex items-center gap-4">
-                  <span className="grid size-11 shrink-0 place-items-center rounded-lg bg-background text-industrial">
+                  <span className="grid size-11 shrink-0 place-items-center rounded-lg bg-industrial/10 text-industrial">
                     <Icon className="size-5" strokeWidth={1.7} />
                   </span>
                   <h3 className="font-extrabold">{title}</h3>
