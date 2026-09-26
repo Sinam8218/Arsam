@@ -513,7 +513,7 @@ function Index() {
             <BrandMark />
             <div><p className="font-bold">آرسام انرژی صنعت</p><p lang="en" className="mt-1 text-[10px] text-primary-foreground/45">ARSAM ENERGY SANAT</p></div>
           </div>
-          <p className="text-xs text-primary-foreground/45">طراحی و ساخت تجهیزات حرارتی و فرایندی</p>
+          <p className="text-xs text-primary-foreground/45">طراحی و ساخت تجهیزات و سیستم‌های انرژی</p>
         </div>
       </footer>
     </main>

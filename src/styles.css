@@ -228,8 +228,8 @@
 
 @media (prefers-reduced-motion: no-preference) {
   .hero-image { animation: slow-drift 18s ease-in-out infinite; }
-  .brand-mark i { animation: brand-mark-enter 650ms cubic-bezier(0.2, 0.75, 0.25, 1) both; }
-  .brand-mark-orange { animation-delay: 100ms; }
+  .brand-mark path { animation: brand-mark-enter 650ms cubic-bezier(0.2, 0.75, 0.25, 1) both; }
+  .brand-mark-orange { animation-delay: 120ms; }
 }
 
 @media (max-width: 640px) {
