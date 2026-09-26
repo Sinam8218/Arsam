@@ -158,7 +158,7 @@ function Index() {
             <BrandMark />
             <span className="brand-name">
               <strong>آرسام انرژی صنعت</strong>
-              <small>ARSAM ENERGY SANAT</small>
+              <small lang="en">ARSAM ENERGY SANAT</small>
             </span>
           </a>
 
@@ -371,7 +371,7 @@ function Index() {
                 ["شرایط بهره‌برداری", "مبنای دسترسی، نظافت و نگهداری تجهیز"],
               ].map(([title, text], index) => (
                 <div key={title} className="grid grid-cols-[2.5rem_1fr] gap-4">
-                  <span className="grid size-10 place-items-center rounded-sm border border-primary-foreground/20 text-sm font-bold">۰{index + 1}</span>
+                  <span className="grid size-10 place-items-center rounded-lg border border-primary-foreground/20 text-sm font-bold">۰{index + 1}</span>
                   <div>
                     <h3 className="font-bold">{title}</h3>
                     <p className="mt-1 text-xs leading-6 text-primary-foreground/55">{text}</p>
