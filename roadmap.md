@@ -7,3 +7,7 @@
 - [x] Rebrand the site as Arsam Energy Sanat using the supplied identity direction
 - [x] Refine visual hierarchy, motion, and Persian RTL presentation
 - [x] Verify the redesigned experience on desktop and mobile
+- [ ] Remove empty service-card space and soften sharp edges
+- [ ] Add an industrial image to the applications section
+- [ ] Apply IRANSansX for Persian and Montserrat for Latin text
+- [ ] Recheck the updated page on desktop and mobile
