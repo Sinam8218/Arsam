@@ -24,6 +24,7 @@ import {
 import { useEffect, useState, type FormEvent } from "react";
 
 import heroImage from "../assets/plate-heat-exchanger-hero.jpg";
+import industriesImage from "../assets/industrial-applications.jpg";
 import { Button } from "../components/ui/button";
 
 export const Route = createFileRoute("/")({
@@ -157,7 +158,7 @@ function Index() {
             <BrandMark />
             <span className="brand-name">
               <strong>آرسام انرژی صنعت</strong>
-              <small>ARSAM ENERGY SANAT</small>
+              <small lang="en">ARSAM ENERGY SANAT</small>
             </span>
           </a>
 
@@ -308,20 +309,20 @@ function Index() {
             <h2 className="mt-5 text-3xl font-extrabold sm:text-4xl">راهکارهای تخصصی آرسام</h2>
             <p className="mt-4 leading-8 text-muted-foreground">تمرکز ما بر زنجیره کامل طراحی تا تولید مبدل‌های حرارتی صفحه‌ای و اجزای اصلی آن است.</p>
           </div>
-          <div className="mt-12 grid gap-px overflow-hidden rounded-sm border border-border bg-border md:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-4">
             {services.map((service, index) => {
               const Icon = service.icon;
               return (
-                <article key={service.title} className="service-card reveal group relative min-h-80 bg-background p-7 transition-all" style={{ animationDelay: `${index * 90}ms` }}>
+                <article key={service.title} className="service-card reveal group relative flex h-full flex-col rounded-xl border border-border bg-background p-7 transition-all" style={{ animationDelay: `${index * 90}ms` }}>
                   <div className="flex items-start justify-between">
-                    <span className="grid size-12 place-items-center rounded-sm bg-secondary text-primary transition-colors group-hover:bg-primary-foreground/10 group-hover:text-primary-foreground">
+                    <span className="grid size-12 place-items-center rounded-lg bg-secondary text-primary transition-colors group-hover:bg-primary-foreground/10 group-hover:text-primary-foreground">
                       <Icon className="size-6" strokeWidth={1.7} />
                     </span>
                     <span className="text-3xl font-light text-muted-foreground/40 group-hover:text-primary-foreground/30">{service.number}</span>
                   </div>
-                  <h3 className="mt-10 text-xl font-extrabold leading-8 group-hover:text-primary-foreground">{service.title}</h3>
+                  <h3 className="mt-8 text-xl font-extrabold leading-8 group-hover:text-primary-foreground">{service.title}</h3>
                   <p className="mt-4 text-sm leading-7 text-muted-foreground group-hover:text-primary-foreground/75">{service.description}</p>
-                  <div className="absolute inset-x-7 bottom-7 flex items-center gap-2 text-xs font-bold text-primary opacity-0 transition-opacity group-hover:text-safety group-hover:opacity-100">
+                  <div className="mt-auto flex items-center gap-2 pt-6 text-xs font-bold text-primary opacity-70 transition-opacity group-hover:text-safety group-hover:opacity-100">
                     بررسی نیاز پروژه <ArrowUpLeft className="size-4" />
                   </div>
                 </article>
@@ -359,7 +360,7 @@ function Index() {
               })}
             </div>
           </div>
-          <div className="reveal relative border border-primary-foreground/15 bg-primary-foreground/5 p-6 sm:p-10">
+           <div className="reveal relative overflow-hidden rounded-xl border border-primary-foreground/15 bg-primary-foreground/5 p-6 sm:p-10">
             <div className="absolute -right-px top-0 h-20 w-1 bg-safety" />
             <p className="text-sm font-bold text-safety">اطلاعات فنی پروژه</p>
             <div className="mt-7 space-y-6">
@@ -370,7 +371,7 @@ function Index() {
                 ["شرایط بهره‌برداری", "مبنای دسترسی، نظافت و نگهداری تجهیز"],
               ].map(([title, text], index) => (
                 <div key={title} className="grid grid-cols-[2.5rem_1fr] gap-4">
-                  <span className="grid size-10 place-items-center rounded-sm border border-primary-foreground/20 text-sm font-bold">۰{index + 1}</span>
+                  <span className="grid size-10 place-items-center rounded-lg border border-primary-foreground/20 text-sm font-bold">۰{index + 1}</span>
                   <div>
                     <h3 className="font-bold">{title}</h3>
                     <p className="mt-1 text-xs leading-6 text-primary-foreground/55">{text}</p>
@@ -384,18 +385,29 @@ function Index() {
 
       <section id="industries" className="bg-background py-20 lg:py-28">
         <div className="mx-auto max-w-7xl px-5 lg:px-8">
-          <div className="reveal grid gap-7 lg:grid-cols-2 lg:items-end">
-            <div>
+          <div className="reveal grid gap-8 lg:grid-cols-[0.85fr_1.15fr] lg:items-center">
+            <div className="lg:pl-8">
               <SectionLabel>صنایع و کاربردها</SectionLabel>
               <h2 className="mt-5 text-3xl font-extrabold sm:text-4xl">کاربردها در صنایع مختلف</h2>
+              <p className="mt-5 leading-8 text-muted-foreground">از تأمین آب گرم مصرفی تا فرایندهای پالایش نفت؛ مبدل‌های صفحه‌ای هر جا که تبادل حرارت دقیق و ابعاد فشرده اهمیت دارد به کار می‌روند.</p>
             </div>
-            <p className="leading-8 text-muted-foreground lg:max-w-lg lg:justify-self-end">از تأمین آب گرم مصرفی تا فرایندهای پالایش نفت؛ مبدل‌های صفحه‌ای هر جا که تبادل حرارت دقیق و ابعاد فشرده اهمیت دارد به کار می‌روند.</p>
+            <figure className="group relative aspect-[16/8.5] overflow-hidden rounded-2xl bg-surface shadow-xl">
+              <img
+                src={industriesImage}
+                alt="مبدل حرارتی صفحه‌ای در یک مجموعه صنعتی مدرن"
+                width={1600}
+                height={1000}
+                loading="lazy"
+                className="size-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+              />
+              <span className="absolute inset-y-0 right-0 w-1.5 bg-accent" />
+            </figure>
           </div>
-          <div className="mt-12 grid gap-px overflow-hidden rounded-sm border border-border bg-border sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {industryGroups.map(({ icon: Icon, title, items }, index) => (
-              <div key={title} className="reveal bg-surface p-7" style={{ animationDelay: `${index * 80}ms` }}>
+              <div key={title} className="reveal rounded-xl border border-border bg-surface p-7 transition-all duration-300 hover:-translate-y-1 hover:bg-background hover:shadow-lg" style={{ animationDelay: `${index * 80}ms` }}>
                 <div className="flex items-center gap-4">
-                  <span className="grid size-11 shrink-0 place-items-center rounded-sm bg-background text-industrial">
+                  <span className="grid size-11 shrink-0 place-items-center rounded-lg bg-background text-industrial">
                     <Icon className="size-5" strokeWidth={1.7} />
                   </span>
                   <h3 className="font-extrabold">{title}</h3>
@@ -435,7 +447,7 @@ function Index() {
 
       <section id="about" className="bg-background py-20 lg:py-28">
         <div className="reveal mx-auto grid max-w-7xl gap-12 px-5 lg:grid-cols-[1fr_1.1fr] lg:items-center lg:px-8">
-          <div className="relative overflow-hidden rounded-sm bg-primary p-8 text-primary-foreground sm:p-12">
+          <div className="relative overflow-hidden rounded-2xl bg-primary p-8 text-primary-foreground sm:p-12">
             <BrandMark decorative />
             <p className="text-sm font-bold text-safety">چشم‌انداز مجموعه</p>
             <blockquote className="relative mt-5 text-2xl font-bold leading-[1.7] sm:text-3xl">
@@ -448,7 +460,7 @@ function Index() {
             <p className="mt-6 leading-9 text-muted-foreground">
               تیم ما دانش‌آموختگان مهندسی مکانیک در گرایش‌های طراحی کاربردی، ساخت و تولید و حرارت و سیالات است؛ با سابقه کار در صنایع مختلف حرارتی و در شرکت تولیدکننده مبدل حرارتی.
             </p>
-            <p className="mt-4 rounded-sm border-r-2 border-safety bg-surface p-4 text-sm leading-7 text-muted-foreground">
+            <p className="mt-4 rounded-lg border-r-2 border-safety bg-surface p-4 text-sm leading-7 text-muted-foreground">
               آرسام انرژی صنعت با تمرکز بر کیفیت طراحی، قابلیت ساخت و عملکرد پایدار تجهیزات، برای مسائل واقعی صنعت راهکار ارائه می‌دهد.
             </p>
           </div>
@@ -472,7 +484,7 @@ function Index() {
               </div>
             </div>
           </div>
-          <form onSubmit={handleSubmit} className="reveal rounded-sm bg-background p-6 text-foreground sm:p-9">
+          <form onSubmit={handleSubmit} className="reveal rounded-2xl bg-background p-6 text-foreground shadow-xl sm:p-9">
             <div className="grid gap-5 sm:grid-cols-2">
               <Field label="نام و نام خانوادگی" name="name" placeholder="نام شما" />
               <Field label="نام شرکت" name="company" placeholder="نام مجموعه" />
@@ -481,10 +493,10 @@ function Index() {
             </div>
             <label className="mt-5 block text-sm font-bold">
               توضیح کوتاه پروژه
-              <textarea name="message" rows={4} placeholder="نیاز یا مسئله فنی خود را بنویسید" className="mt-2 w-full resize-none rounded-sm border border-input bg-background px-4 py-3 text-sm font-normal outline-none transition-colors placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-ring/20" />
+              <textarea name="message" rows={4} placeholder="نیاز یا مسئله فنی خود را بنویسید" className="mt-2 w-full resize-none rounded-lg border border-input bg-background px-4 py-3 text-sm font-normal outline-none transition-colors placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-ring/20" />
             </label>
             {submitted ? (
-              <div className="mt-6 flex items-start gap-3 rounded-sm border border-industrial bg-secondary p-4 text-sm leading-7">
+              <div className="mt-6 flex items-start gap-3 rounded-lg border border-industrial bg-secondary p-4 text-sm leading-7">
                 <CheckCircle2 className="mt-1 size-5 shrink-0 text-industrial" />
                 فرم نمایشی است؛ پس از تهیه دامنه و راه ارتباطی، ارسال واقعی پیام فعال می‌شود.
               </div>
@@ -499,7 +511,7 @@ function Index() {
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-6 px-5 text-center sm:flex-row sm:text-right lg:px-8">
           <div className="brand-lockup brand-lockup-light">
             <BrandMark />
-            <div><p className="font-bold">آرسام انرژی صنعت</p><p className="mt-1 text-[10px] text-primary-foreground/45">ARSAM ENERGY SANAT</p></div>
+            <div><p className="font-bold">آرسام انرژی صنعت</p><p lang="en" className="mt-1 text-[10px] text-primary-foreground/45">ARSAM ENERGY SANAT</p></div>
           </div>
           <p className="text-xs text-primary-foreground/45">طراحی و ساخت تجهیزات حرارتی و فرایندی</p>
         </div>
@@ -540,7 +552,7 @@ function Field({
   return (
     <label className="block text-sm font-bold">
       {label}
-      <input name={name} inputMode={inputMode} placeholder={placeholder} className="mt-2 h-12 w-full rounded-sm border border-input bg-background px-4 text-sm font-normal outline-none transition-colors placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-ring/20" />
+      <input name={name} inputMode={inputMode} placeholder={placeholder} className="mt-2 h-12 w-full rounded-lg border border-input bg-background px-4 text-sm font-normal outline-none transition-colors placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-ring/20" />
     </label>
   );
 }

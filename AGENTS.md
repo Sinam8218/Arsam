@@ -10,4 +10,4 @@
 <!-- LOVABLE:END -->
 
 - Keep the public website as a single Persian RTL landing page until the business has enough finalized content for separate routes; this keeps early self-management simple.
-- Treat Arsam Energy Sanat's geometric A mark, midnight navy, royal blue, orange, gray palette, and Persian-first RTL typography as the canonical brand system; this matches the approved identity direction.
+- Treat Arsam Energy Sanat's geometric A mark, midnight navy, royal blue, orange, gray palette, softly rounded geometry, IRANSansX for Persian, and Montserrat for Latin as the canonical brand system; this matches the approved identity direction.
