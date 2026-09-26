@@ -332,7 +332,9 @@ function Index() {
         </div>
       </section>
 
-      <section id="capabilities" className="blueprint-section bg-foreground py-20 text-primary-foreground lg:py-28">
+      <section id="capabilities" className="capabilities-section relative overflow-hidden py-20 text-primary-foreground lg:py-28">
+        <div className="pointer-events-none absolute -left-32 top-1/3 size-96 rounded-full bg-industrial/25 blur-3xl" />
+        <div className="pointer-events-none absolute -right-24 bottom-0 size-80 rounded-full bg-safety/15 blur-3xl" />
         <div className="mx-auto grid max-w-7xl gap-14 px-5 lg:grid-cols-2 lg:items-center lg:px-8">
           <div className="reveal">
             <SectionLabel light>دقت در تمام مراحل</SectionLabel>
