@@ -332,7 +332,9 @@ function Index() {
         </div>
       </section>
 
-      <section id="capabilities" className="blueprint-section bg-foreground py-20 text-primary-foreground lg:py-28">
+      <section id="capabilities" className="capabilities-section relative overflow-hidden py-20 text-primary-foreground lg:py-28">
+        <div className="pointer-events-none absolute -left-32 top-1/3 size-96 rounded-full bg-industrial/25 blur-3xl" />
+        <div className="pointer-events-none absolute -right-24 bottom-0 size-80 rounded-full bg-safety/15 blur-3xl" />
         <div className="mx-auto grid max-w-7xl gap-14 px-5 lg:grid-cols-2 lg:items-center lg:px-8">
           <div className="reveal">
             <SectionLabel light>دقت در تمام مراحل</SectionLabel>
@@ -360,18 +362,18 @@ function Index() {
               })}
             </div>
           </div>
-           <div className="reveal relative overflow-hidden rounded-xl border border-primary-foreground/15 bg-primary-foreground/5 p-6 sm:p-10">
-            <div className="absolute -right-px top-0 h-20 w-1 bg-safety" />
-            <p className="text-sm font-bold text-safety">اطلاعات فنی پروژه</p>
-            <div className="mt-7 space-y-6">
-              {[
-                ["نوع و ترکیب سیالات", "مبنای انتخاب متریال و طراحی مسیر جریان"],
-                ["دبی، دما و فشار", "ورودی محاسبات انتقال حرارت و استحکام"],
-                ["افت فشار مجاز", "عامل تعیین‌کننده آرایش و سطح انتقال"],
-                ["شرایط بهره‌برداری", "مبنای دسترسی، نظافت و نگهداری تجهیز"],
-              ].map(([title, text], index) => (
-                <div key={title} className="grid grid-cols-[2.5rem_1fr] gap-4">
-                  <span className="grid size-10 place-items-center rounded-lg border border-primary-foreground/20 text-sm font-bold">۰{index + 1}</span>
+            <div className="reveal relative overflow-hidden rounded-2xl border border-primary-foreground/15 bg-gradient-to-bl from-primary-foreground/10 via-primary-foreground/5 to-transparent p-6 shadow-2xl backdrop-blur-sm sm:p-10">
+             <div className="absolute -right-px top-0 h-20 w-1 rounded-full bg-safety" />
+             <p className="text-sm font-bold text-safety">اطلاعات فنی پروژه</p>
+             <div className="mt-7 space-y-6">
+               {[
+                 ["نوع و ترکیب سیالات", "مبنای انتخاب متریال و طراحی مسیر جریان"],
+                 ["دبی، دما و فشار", "ورودی محاسبات انتقال حرارت و استحکام"],
+                 ["افت فشار مجاز", "عامل تعیین‌کننده آرایش و سطح انتقال"],
+                 ["شرایط بهره‌برداری", "مبنای دسترسی، نظافت و نگهداری تجهیز"],
+               ].map(([title, text], index) => (
+                 <div key={title} className="grid grid-cols-[2.5rem_1fr] gap-4">
+                   <span className="grid size-10 place-items-center rounded-xl border border-safety/40 bg-safety/10 text-sm font-bold text-safety">{["۰۱", "۰۲", "۰۳", "۰۴"][index]}</span>
                   <div>
                     <h3 className="font-bold">{title}</h3>
                     <p className="mt-1 text-xs leading-6 text-primary-foreground/55">{text}</p>
