@@ -30,6 +30,7 @@ const brandSymbolAsset = { url: brandSymbolUrl };
 import brandLockupUrl from "../assets/arsam-logo-full.png";
 const brandLockupAsset = { url: brandLockupUrl };
 import { Button } from "../components/ui/button";
+import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -149,8 +150,34 @@ function Index() {
     return () => observer.disconnect();
   }, []);
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const [sending, setSending] = useState(false);
+  const [submitError, setSubmitError] = useState(false);
+
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    const form = event.currentTarget;
+    const data = new FormData(form);
+    const name = String(data.get("name") ?? "").trim();
+    const phone = String(data.get("phone") ?? "").trim();
+    const company = String(data.get("company") ?? "").trim();
+    const industry = String(data.get("industry") ?? "").trim();
+    const message = String(data.get("message") ?? "").trim();
+    if (!name || !phone || !message) {
+      setSubmitError(true);
+      return;
+    }
+    setSending(true);
+    setSubmitError(false);
+    const subject = [company, industry].filter(Boolean).join(" — ") || null;
+    const { error } = await supabase
+      .from("contact_messages")
+      .insert({ name, phone, subject, message });
+    setSending(false);
+    if (error) {
+      setSubmitError(true);
+      return;
+    }
+    form.reset();
     setSubmitted(true);
   };
 
