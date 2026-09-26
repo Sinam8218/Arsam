@@ -25,6 +25,8 @@ import { useEffect, useState, type FormEvent } from "react";
 
 import heroImage from "../assets/plate-heat-exchanger-hero.jpg";
 import industriesImage from "../assets/industrial-applications.jpg";
+import brandSymbolAsset from "../assets/arsam-logo-symbol-only.svg.asset.json";
+import brandLockupAsset from "../assets/arsam-energy-sanat-logo.svg.asset.json";
 import { Button } from "../components/ui/button";
 
 export const Route = createFileRoute("/")({
@@ -155,11 +157,7 @@ function Index() {
       <header className="sticky top-0 z-50 border-b border-border/80 bg-background/95 backdrop-blur-md">
         <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-5 lg:px-8">
           <a href="#top" className="brand-lockup" aria-label="آرسام انرژی صنعت — صفحه اصلی">
-            <BrandMark />
-            <span className="brand-name">
-              <strong>آرسام انرژی صنعت</strong>
-              <small lang="en">ARSAM ENERGY SANAT</small>
-            </span>
+            <BrandLockup />
           </a>
 
           <nav className="hidden items-center gap-7 lg:flex" aria-label="منوی اصلی">
@@ -183,12 +181,12 @@ function Index() {
           </div>
           <Button
             variant="ghost"
-            size="icon"
-            className="border border-border bg-surface text-primary lg:hidden"
+            size="icon-lg"
+            className="size-14 shrink-0 rounded-xl border-2 border-primary/20 bg-surface text-primary shadow-sm lg:hidden"
             aria-label={menuOpen ? "بستن منو" : "باز کردن منو"}
             onClick={() => setMenuOpen((value) => !value)}
           >
-            {menuOpen ? <X className="size-6" /> : <Menu className="size-6" />}
+            {menuOpen ? <X className="size-8" strokeWidth={2.25} /> : <Menu className="size-8" strokeWidth={2.25} />}
           </Button>
         </div>
         {menuOpen && (
@@ -510,8 +508,7 @@ function Index() {
       <footer className="bg-foreground py-10 text-primary-foreground">
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-6 px-5 text-center sm:flex-row sm:text-right lg:px-8">
           <div className="brand-lockup brand-lockup-light">
-            <BrandMark />
-            <div><p className="font-bold">آرسام انرژی صنعت</p><p lang="en" className="mt-1 text-[10px] text-primary-foreground/45">ARSAM ENERGY SANAT</p></div>
+            <BrandLockup footer />
           </div>
           <p className="text-xs text-primary-foreground/45">طراحی و ساخت تجهیزات و سیستم‌های انرژی</p>
         </div>
@@ -532,29 +529,18 @@ function SectionLabel({ children, light = false }: { children: string; light?: b
 function BrandMark({ decorative = false }: { decorative?: boolean }) {
   return (
     <span className={decorative ? "brand-mark brand-mark-decorative" : "brand-mark"} aria-hidden="true">
-      <svg viewBox="0 0 100 92" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <linearGradient id="bm-blue" x1="14" y1="88" x2="60" y2="4" gradientUnits="userSpaceOnUse">
-            <stop offset="0" stopColor="#0B1F3B" />
-            <stop offset="1" stopColor="#2563EB" />
-          </linearGradient>
-          <linearGradient id="bm-orange" x1="58" y1="10" x2="90" y2="88" gradientUnits="userSpaceOnUse">
-            <stop offset="0" stopColor="#FF7A00" />
-            <stop offset="1" stopColor="#FFB15C" />
-          </linearGradient>
-        </defs>
-        <path
-          className="brand-mark-blue"
-          d="M57 3C45 3 39 9 35 19L7 79C5 84 8 88 14 88H25C30 88 33 85 35 80L53 36C56 28 60 20 66 14L64 8C62 4 60 3 57 3Z"
-          fill="url(#bm-blue)"
-        />
-        <path
-          className="brand-mark-orange"
-          d="M57 3C69 3 75 9 79 19L93 79C95 84 92 88 86 88H75C70 88 67 85 65 80L51 42C48 33 46 25 46 17C46 8 50 3 57 3Z"
-          fill="url(#bm-orange)"
-        />
-      </svg>
+      <img src={brandSymbolAsset.url} alt="" className="size-full object-contain" />
     </span>
+  );
+}
+
+function BrandLockup({ footer = false }: { footer?: boolean }) {
+  return (
+    <img
+      src={brandLockupAsset.url}
+      alt="آرسام انرژی صنعت — طراحی و ساخت تجهیزات و سیستم‌های انرژی"
+      className={footer ? "brand-lockup-image brand-lockup-image-footer" : "brand-lockup-image"}
+    />
   );
 }
 

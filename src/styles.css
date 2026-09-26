@@ -199,8 +199,10 @@
 .brand-lockup {
   display: flex;
   align-items: center;
-  gap: 0.7rem;
 }
+
+.brand-lockup-image { display: block; width: 10.5rem; height: auto; }
+.brand-lockup-image-footer { width: 9.5rem; border-radius: var(--radius-lg); }
 
 .brand-name strong,
 .brand-name small { display: block; }
@@ -214,7 +216,7 @@
   flex: none;
 }
 
-.brand-mark svg { display: block; width: 100%; height: auto; }
+.brand-mark img { display: block; width: 100%; height: auto; }
 .brand-lockup-light .brand-name strong,
 .brand-lockup-light { color: var(--primary-foreground); }
 .brand-mark-decorative { position: absolute; bottom: -2rem; left: -1rem; width: 15rem; opacity: 0.07; }
@@ -233,8 +235,8 @@
 }
 
 @media (max-width: 640px) {
-  .brand-name strong { font-size: 0.78rem; }
-  .brand-name small { font-size: 0.48rem; }
+  .brand-lockup-image { width: 8.6rem; }
+  .brand-lockup-image-footer { width: 9.5rem; }
   .hero-overlay { background: linear-gradient(0deg, var(--primary), color-mix(in oklab, var(--primary) 55%, transparent)); }
 }
 
