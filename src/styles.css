@@ -176,8 +176,8 @@
 }
 
 @keyframes brand-mark-enter {
-  from { opacity: 0; transform: translateY(8px) skewX(-12deg); }
-  to { opacity: 1; transform: translateY(0) skewX(-12deg); }
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes slow-drift {
@@ -204,23 +204,20 @@
 
 .brand-name strong,
 .brand-name small { display: block; }
-.brand-name strong { font-size: 0.9rem; font-weight: 800; line-height: 1.3; }
-.brand-name small { margin-top: 0.15rem; color: var(--muted-foreground); font-family: var(--font-latin); font-size: 0.55rem; font-weight: 700; letter-spacing: 0; direction: ltr; }
+.brand-name strong { font-size: 0.95rem; font-weight: 800; line-height: 1.35; color: var(--primary); }
+.brand-name small { margin-top: 0.2rem; color: var(--muted-foreground); font-family: var(--font-latin); font-size: 0.55rem; font-weight: 600; letter-spacing: 0.24em; direction: ltr; }
 
 .brand-mark {
   position: relative;
   display: inline-block;
-  width: 2.8rem;
-  height: 2.8rem;
+  width: 2.7rem;
   flex: none;
-  overflow: hidden;
 }
 
-.brand-mark i { position: absolute; display: block; transform: skewX(-12deg); }
-.brand-mark-blue { inset: 0.25rem 0.45rem 0.15rem 0.2rem; background: linear-gradient(145deg, var(--industrial), var(--primary) 72%); clip-path: polygon(46% 0, 100% 100%, 65% 100%, 42% 50%, 20% 100%, 0 100%); }
-.brand-mark-orange { right: 0.38rem; bottom: 0.15rem; width: 1.9rem; height: 1.65rem; background: var(--accent); clip-path: polygon(70% 0, 100% 100%, 71% 100%, 52% 48%, 28% 100%, 0 100%); }
+.brand-mark svg { display: block; width: 100%; height: auto; }
+.brand-lockup-light .brand-name strong,
 .brand-lockup-light { color: var(--primary-foreground); }
-.brand-mark-decorative { position: absolute; bottom: -2rem; left: -1rem; width: 15rem; height: 15rem; opacity: 0.07; }
+.brand-mark-decorative { position: absolute; bottom: -2rem; left: -1rem; width: 15rem; opacity: 0.07; }
 
 .hero-overlay { background: linear-gradient(90deg, color-mix(in oklab, var(--primary) 25%, transparent), color-mix(in oklab, var(--primary) 80%, transparent) 60%, var(--primary)); }
 .brand-statement { background-image: linear-gradient(115deg, transparent 0 72%, color-mix(in oklab, var(--industrial) 22%, transparent) 72% 86%, color-mix(in oklab, var(--accent) 16%, transparent) 86%); }
@@ -231,8 +228,8 @@
 
 @media (prefers-reduced-motion: no-preference) {
   .hero-image { animation: slow-drift 18s ease-in-out infinite; }
-  .brand-mark i { animation: brand-mark-enter 650ms cubic-bezier(0.2, 0.75, 0.25, 1) both; }
-  .brand-mark-orange { animation-delay: 100ms; }
+  .brand-mark path { animation: brand-mark-enter 650ms cubic-bezier(0.2, 0.75, 0.25, 1) both; }
+  .brand-mark-orange { animation-delay: 120ms; }
 }
 
 @media (max-width: 640px) {

@@ -513,7 +513,7 @@ function Index() {
             <BrandMark />
             <div><p className="font-bold">آرسام انرژی صنعت</p><p lang="en" className="mt-1 text-[10px] text-primary-foreground/45">ARSAM ENERGY SANAT</p></div>
           </div>
-          <p className="text-xs text-primary-foreground/45">طراحی و ساخت تجهیزات حرارتی و فرایندی</p>
+          <p className="text-xs text-primary-foreground/45">طراحی و ساخت تجهیزات و سیستم‌های انرژی</p>
         </div>
       </footer>
     </main>
@@ -532,8 +532,28 @@ function SectionLabel({ children, light = false }: { children: string; light?: b
 function BrandMark({ decorative = false }: { decorative?: boolean }) {
   return (
     <span className={decorative ? "brand-mark brand-mark-decorative" : "brand-mark"} aria-hidden="true">
-      <i className="brand-mark-blue" />
-      <i className="brand-mark-orange" />
+      <svg viewBox="0 0 100 92" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="bm-blue" x1="14" y1="88" x2="60" y2="4" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stopColor="#0B1F3B" />
+            <stop offset="1" stopColor="#2563EB" />
+          </linearGradient>
+          <linearGradient id="bm-orange" x1="58" y1="10" x2="90" y2="88" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stopColor="#FF7A00" />
+            <stop offset="1" stopColor="#FFB15C" />
+          </linearGradient>
+        </defs>
+        <path
+          className="brand-mark-blue"
+          d="M57 3C45 3 39 9 35 19L7 79C5 84 8 88 14 88H25C30 88 33 85 35 80L53 36C56 28 60 20 66 14L64 8C62 4 60 3 57 3Z"
+          fill="url(#bm-blue)"
+        />
+        <path
+          className="brand-mark-orange"
+          d="M57 3C69 3 75 9 79 19L93 79C95 84 92 88 86 88H75C70 88 67 85 65 80L51 42C48 33 46 25 46 17C46 8 50 3 57 3Z"
+          fill="url(#bm-orange)"
+        />
+      </svg>
     </span>
   );
 }
