@@ -75,22 +75,22 @@
   --card-foreground: oklch(0.129 0.042 264.695);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.129 0.042 264.695);
-  --primary: oklch(0.405 0.12 249);
+  --primary: oklch(0.235 0.073 251);
   --primary-foreground: oklch(0.984 0.003 247.858);
   --secondary: oklch(0.928 0.023 228);
   --secondary-foreground: oklch(0.208 0.042 265.755);
   --muted: oklch(0.968 0.007 247.896);
   --muted-foreground: oklch(0.554 0.046 257.417);
-  --accent: oklch(0.73 0.16 52);
+  --accent: oklch(0.704 0.202 46);
   --accent-foreground: oklch(0.19 0.025 50);
   --destructive: oklch(0.577 0.245 27.325);
   --destructive-foreground: oklch(0.984 0.003 247.858);
   --border: oklch(0.874 0.017 236);
   --input: oklch(0.91 0.015 236);
-  --ring: oklch(0.58 0.13 246);
-  --industrial: oklch(0.51 0.105 200);
+  --ring: oklch(0.57 0.2 257);
+  --industrial: oklch(0.57 0.2 257);
   --industrial-foreground: oklch(0.99 0.005 200);
-  --safety: oklch(0.73 0.16 52);
+  --safety: oklch(0.704 0.202 46);
   --safety-foreground: oklch(0.19 0.025 50);
   --surface: oklch(0.955 0.009 230);
   --chart-1: oklch(0.646 0.222 41.116);
@@ -168,6 +168,11 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
+@keyframes brand-mark-enter {
+  from { opacity: 0; transform: translateY(8px) skewX(-12deg); }
+  to { opacity: 1; transform: translateY(0) skewX(-12deg); }
+}
+
 @keyframes slow-drift {
   0%, 100% { transform: scale(1.02); }
   50% { transform: scale(1.055); }
@@ -184,8 +189,48 @@
   background-size: 42px 42px;
 }
 
+.brand-lockup {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.brand-name strong,
+.brand-name small { display: block; }
+.brand-name strong { font-size: 0.9rem; font-weight: 800; line-height: 1.3; }
+.brand-name small { margin-top: 0.15rem; color: var(--muted-foreground); font-size: 0.55rem; font-weight: 700; letter-spacing: 0.08em; direction: ltr; }
+
+.brand-mark {
+  position: relative;
+  display: inline-block;
+  width: 2.8rem;
+  height: 2.8rem;
+  flex: none;
+  overflow: hidden;
+}
+
+.brand-mark i { position: absolute; display: block; transform: skewX(-12deg); }
+.brand-mark-blue { inset: 0.25rem 0.45rem 0.15rem 0.2rem; background: linear-gradient(145deg, var(--industrial), var(--primary) 72%); clip-path: polygon(46% 0, 100% 100%, 65% 100%, 42% 50%, 20% 100%, 0 100%); }
+.brand-mark-orange { right: 0.38rem; bottom: 0.15rem; width: 1.9rem; height: 1.65rem; background: var(--accent); clip-path: polygon(70% 0, 100% 100%, 71% 100%, 52% 48%, 28% 100%, 0 100%); }
+.brand-lockup-light { color: var(--primary-foreground); }
+.brand-mark-decorative { position: absolute; bottom: -2rem; left: -1rem; width: 15rem; height: 15rem; opacity: 0.07; }
+
+.hero-overlay { background: linear-gradient(90deg, color-mix(in oklab, var(--primary) 25%, transparent), color-mix(in oklab, var(--primary) 80%, transparent) 60%, var(--primary)); }
+.brand-statement { background-image: linear-gradient(115deg, transparent 0 72%, color-mix(in oklab, var(--industrial) 22%, transparent) 72% 86%, color-mix(in oklab, var(--accent) 16%, transparent) 86%); }
+.blueprint-section { background-image: linear-gradient(color-mix(in oklab, var(--primary-foreground) 4%, transparent) 1px, transparent 1px), linear-gradient(90deg, color-mix(in oklab, var(--primary-foreground) 4%, transparent) 1px, transparent 1px); background-size: 56px 56px; }
+.contact-section { background-image: linear-gradient(135deg, transparent 0 73%, color-mix(in oklab, var(--industrial) 35%, transparent) 73% 86%, color-mix(in oklab, var(--accent) 18%, transparent) 86%); }
+.service-card:hover { transform: translateY(-6px); box-shadow: 0 18px 45px color-mix(in oklab, var(--primary) 18%, transparent); }
+
 @media (prefers-reduced-motion: no-preference) {
   .hero-image { animation: slow-drift 18s ease-in-out infinite; }
+  .brand-mark i { animation: brand-mark-enter 650ms cubic-bezier(0.2, 0.75, 0.25, 1) both; }
+  .brand-mark-orange { animation-delay: 100ms; }
+}
+
+@media (max-width: 640px) {
+  .brand-name strong { font-size: 0.78rem; }
+  .brand-name small { font-size: 0.48rem; }
+  .hero-overlay { background: linear-gradient(0deg, var(--primary), color-mix(in oklab, var(--primary) 55%, transparent)); }
 }
 
 @media (prefers-reduced-motion: reduce) {

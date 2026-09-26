@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import {
   ArrowLeft,
+  ArrowUpLeft,
   Building2,
   CheckCircle2,
   ChevronDown,
@@ -29,13 +30,13 @@ export const Route = createFileRoute("/")({
   component: Index,
   head: () => ({
     meta: [
-      { title: "مهندسی انتقال حرارت | طراحی و تولید مبدل حرارتی صفحه‌ای" },
+      { title: "آرسام انرژی صنعت | طراحی و ساخت تجهیزات حرارتی" },
       {
         name: "description",
         content:
-          "طراحی، مهندسی و تولید مبدل‌های حرارتی صفحه‌ای، قالب پلیت و پلیت مبدل برای صنایع ایران.",
+          "آرسام انرژی صنعت؛ طراحی و ساخت مبدل‌های حرارتی صفحه‌ای، قالب پلیت و تجهیزات فرایندی برای صنایع ایران.",
       },
-      { property: "og:title", content: "مهندسی انتقال حرارت | مبدل‌های حرارتی صفحه‌ای" },
+      { property: "og:title", content: "آرسام انرژی صنعت | تجهیزات حرارتی" },
       {
         property: "og:description",
         content: "راهکارهای مهندسی برای طراحی و تولید مبدل حرارتی صفحه‌ای و پلیت.",
@@ -152,13 +153,11 @@ function Index() {
     <main className="min-h-screen bg-background font-sans text-foreground">
       <header className="sticky top-0 z-50 border-b border-border/80 bg-background/95 backdrop-blur-md">
         <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-5 lg:px-8">
-          <a href="#top" className="flex items-center gap-3" aria-label="صفحه اصلی">
-            <span className="grid size-11 place-items-center rounded-sm bg-primary text-primary-foreground">
-              <Layers3 className="size-6" strokeWidth={1.8} />
-            </span>
-            <span>
-              <strong className="block text-sm font-extrabold leading-5 sm:text-base">مهندسی انتقال حرارت</strong>
-              <span className="block text-[10px] font-medium text-muted-foreground sm:text-xs">نام موقت شرکت</span>
+          <a href="#top" className="brand-lockup" aria-label="آرسام انرژی صنعت — صفحه اصلی">
+            <BrandMark />
+            <span className="brand-name">
+              <strong>آرسام انرژی صنعت</strong>
+              <small>ARSAM ENERGY SANAT</small>
             </span>
           </a>
 
@@ -225,23 +224,23 @@ function Index() {
           fetchPriority="high"
           className="hero-image absolute inset-0 size-full object-cover object-[38%_center] opacity-70"
         />
-        <div className="absolute inset-0 bg-gradient-to-l from-foreground via-foreground/75 to-foreground/10" />
+        <div className="hero-overlay absolute inset-0" />
         <div className="relative mx-auto flex min-h-[calc(100vh-5rem)] max-w-7xl items-center px-5 py-16 lg:px-8">
           <div className="max-w-3xl text-primary-foreground">
             <div className="mb-6 flex items-center gap-3 text-sm font-semibold text-safety">
               <span className="h-px w-12 bg-safety" />
-              طراحی مهندسی برای صنعت ایران
+              طراحی مهندسی برای صنایع ایران
             </div>
             <h1 className="max-w-3xl text-4xl font-extrabold leading-[1.35] sm:text-5xl lg:text-6xl lg:leading-[1.3]">
-              راهکارهای دقیق برای
-              <span className="block text-safety">انتقال حرارت کارآمد</span>
+              طراحی و ساخت تجهیزات
+              <span className="block text-accent">حرارتی و فرایندی</span>
             </h1>
             <p className="mt-7 max-w-2xl text-base font-light leading-9 text-primary-foreground/80 sm:text-lg">
-              طراحی و تولید مبدل‌های حرارتی صفحه‌ای، قالب و پلیت؛ از محاسبات اولیه تا ساخت، کنترل کیفیت و پشتیبانی فنی.
+              راهکارهای یکپارچه مهندسی؛ از تحلیل مسئله و محاسبات دقیق تا طراحی، ساخت و پشتیبانی فنی.
             </p>
             <div className="mt-9 flex flex-col gap-3 sm:flex-row">
               <Button asChild variant="accent" size="lg">
-                <a href="#contact">شروع یک پروژه <ArrowLeft className="size-5" /></a>
+                <a href="#contact">مشاوره مهندسی <ArrowLeft className="size-5" /></a>
               </Button>
               <Button asChild variant="outline" size="lg" className="border-primary-foreground/45 bg-transparent text-primary-foreground hover:border-primary-foreground hover:bg-primary-foreground/10 hover:text-primary-foreground">
                 <a href="#services">مشاهده خدمات</a>
@@ -249,10 +248,20 @@ function Index() {
             </div>
           </div>
         </div>
+        <div className="hero-values absolute inset-x-0 bottom-0 hidden border-t border-primary-foreground/15 bg-primary/75 backdrop-blur-md lg:block">
+          <div className="mx-auto grid max-w-7xl grid-cols-4 px-8">
+            {["طراحی و مهندسی", "ساخت و تولید", "تأمین و بازرگانی", "پشتیبانی فنی"].map((item, index) => (
+              <div key={item} className="flex items-center gap-4 border-l border-primary-foreground/15 px-7 py-6 last:border-r">
+                <span className="text-xs font-bold text-accent">۰{index + 1}</span>
+                <span className="text-sm font-semibold text-primary-foreground">{item}</span>
+              </div>
+            ))}
+          </div>
+        </div>
         <a
           href="#intro"
           aria-label="ادامه صفحه"
-          className="absolute bottom-6 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 text-primary-foreground/60 md:flex"
+          className="absolute bottom-28 left-8 hidden flex-col items-center gap-2 text-primary-foreground/60 md:flex"
         >
           <span className="text-xs">ادامه</span>
           <ChevronDown className="size-5 animate-bounce" />
@@ -262,8 +271,8 @@ function Index() {
       <section id="intro" className="border-b border-border bg-background py-20 lg:py-28">
         <div className="reveal mx-auto grid max-w-7xl gap-12 px-5 lg:grid-cols-[0.85fr_1.15fr] lg:items-start lg:px-8">
           <div>
-            <SectionLabel>راهکار مهندسی، نه محصول عمومی</SectionLabel>
-            <h2 className="mt-5 text-3xl font-extrabold leading-[1.5] sm:text-4xl">هر فرایند، شرایط حرارتی ویژه خود را دارد.</h2>
+            <SectionLabel>تخصص ما، بهره‌وری انرژی شما</SectionLabel>
+            <h2 className="mt-5 text-3xl font-extrabold leading-[1.5] sm:text-4xl">مهندسی دقیق برای یک مسئله واقعی</h2>
           </div>
           <div className="border-r-2 border-industrial pr-6">
             <p className="text-base leading-9 text-muted-foreground sm:text-lg">
@@ -280,14 +289,14 @@ function Index() {
         </div>
       </section>
 
-      <section className="bg-foreground py-16 text-primary-foreground lg:py-20">
+      <section className="brand-statement bg-primary py-16 text-primary-foreground lg:py-20">
         <div className="reveal mx-auto max-w-7xl px-5 lg:px-8">
           <div className="flex items-center gap-3 text-sm font-semibold text-safety">
             <span className="h-px w-12 bg-safety" />
-            چرا این مجموعه
+            تعهد آرسام
           </div>
           <p className="mt-6 max-w-4xl text-2xl font-extrabold leading-[1.8] sm:text-3xl lg:text-4xl">
-            مشکلات صنعتی شما و مسائلی که برای حل آن‌ها به یک تیم مهندسی قدرتمند نیاز دارید، <span className="text-safety">اینجا حل می‌شود.</span>
+            مشکلات صنعتی شما و مسائلی که برای حل آن‌ها به یک تیم مهندسی قدرتمند نیاز دارید، <span className="text-accent">اینجا حل می‌شود.</span>
           </p>
         </div>
       </section>
@@ -296,14 +305,14 @@ function Index() {
         <div className="mx-auto max-w-7xl px-5 lg:px-8">
           <div className="reveal max-w-2xl">
             <SectionLabel>حوزه‌های فعالیت</SectionLabel>
-            <h2 className="mt-5 text-3xl font-extrabold sm:text-4xl">خدمات تخصصی انتقال حرارت</h2>
+            <h2 className="mt-5 text-3xl font-extrabold sm:text-4xl">راهکارهای تخصصی آرسام</h2>
             <p className="mt-4 leading-8 text-muted-foreground">تمرکز ما بر زنجیره کامل طراحی تا تولید مبدل‌های حرارتی صفحه‌ای و اجزای اصلی آن است.</p>
           </div>
           <div className="mt-12 grid gap-px overflow-hidden rounded-sm border border-border bg-border md:grid-cols-2 lg:grid-cols-4">
             {services.map((service, index) => {
               const Icon = service.icon;
               return (
-                <article key={service.title} className="reveal group relative min-h-80 bg-background p-7 transition-colors hover:bg-primary" style={{ animationDelay: `${index * 90}ms` }}>
+                <article key={service.title} className="service-card reveal group relative min-h-80 bg-background p-7 transition-all" style={{ animationDelay: `${index * 90}ms` }}>
                   <div className="flex items-start justify-between">
                     <span className="grid size-12 place-items-center rounded-sm bg-secondary text-primary transition-colors group-hover:bg-primary-foreground/10 group-hover:text-primary-foreground">
                       <Icon className="size-6" strokeWidth={1.7} />
@@ -313,7 +322,7 @@ function Index() {
                   <h3 className="mt-10 text-xl font-extrabold leading-8 group-hover:text-primary-foreground">{service.title}</h3>
                   <p className="mt-4 text-sm leading-7 text-muted-foreground group-hover:text-primary-foreground/75">{service.description}</p>
                   <div className="absolute inset-x-7 bottom-7 flex items-center gap-2 text-xs font-bold text-primary opacity-0 transition-opacity group-hover:text-safety group-hover:opacity-100">
-                    بررسی نیاز پروژه <ArrowLeft className="size-4" />
+                    بررسی نیاز پروژه <ArrowUpLeft className="size-4" />
                   </div>
                 </article>
               );
@@ -322,7 +331,7 @@ function Index() {
         </div>
       </section>
 
-      <section id="capabilities" className="bg-foreground py-20 text-primary-foreground lg:py-28">
+      <section id="capabilities" className="blueprint-section bg-foreground py-20 text-primary-foreground lg:py-28">
         <div className="mx-auto grid max-w-7xl gap-14 px-5 lg:grid-cols-2 lg:items-center lg:px-8">
           <div className="reveal">
             <SectionLabel light>دقت در تمام مراحل</SectionLabel>
@@ -427,30 +436,30 @@ function Index() {
       <section id="about" className="bg-background py-20 lg:py-28">
         <div className="reveal mx-auto grid max-w-7xl gap-12 px-5 lg:grid-cols-[1fr_1.1fr] lg:items-center lg:px-8">
           <div className="relative overflow-hidden rounded-sm bg-primary p-8 text-primary-foreground sm:p-12">
-            <Layers3 className="absolute -bottom-12 -left-10 size-56 text-primary-foreground/5" strokeWidth={1} />
+            <BrandMark decorative />
             <p className="text-sm font-bold text-safety">چشم‌انداز مجموعه</p>
             <blockquote className="relative mt-5 text-2xl font-bold leading-[1.7] sm:text-3xl">
-              تبدیل دانش مهندسی انتقال حرارت به تجهیزات قابل اتکا برای صنعت کشور
+              بهتر برای انرژی، روشن‌تر برای آینده
             </blockquote>
           </div>
           <div>
-            <SectionLabel>درباره مجموعه</SectionLabel>
-            <h2 className="mt-5 text-3xl font-extrabold leading-[1.5] sm:text-4xl">تمرکز تخصصی بر مبدل‌های حرارتی صفحه‌ای</h2>
+            <SectionLabel>درباره آرسام انرژی صنعت</SectionLabel>
+            <h2 className="mt-5 text-3xl font-extrabold leading-[1.5] sm:text-4xl">دانش مهندسی، تجربه صنعتی و نگاه ساخت‌محور</h2>
             <p className="mt-6 leading-9 text-muted-foreground">
               تیم ما دانش‌آموختگان مهندسی مکانیک در گرایش‌های طراحی کاربردی، ساخت و تولید و حرارت و سیالات است؛ با سابقه کار در صنایع مختلف حرارتی و در شرکت تولیدکننده مبدل حرارتی.
             </p>
             <p className="mt-4 rounded-sm border-r-2 border-safety bg-surface p-4 text-sm leading-7 text-muted-foreground">
-              نام و نشان تجاری مجموعه پس از نهایی‌شدن جایگزین می‌شود.
+              آرسام انرژی صنعت با تمرکز بر کیفیت طراحی، قابلیت ساخت و عملکرد پایدار تجهیزات، برای مسائل واقعی صنعت راهکار ارائه می‌دهد.
             </p>
           </div>
         </div>
       </section>
 
-      <section id="contact" className="bg-primary py-20 text-primary-foreground lg:py-28">
+      <section id="contact" className="contact-section bg-primary py-20 text-primary-foreground lg:py-28">
         <div className="mx-auto grid max-w-7xl gap-12 px-5 lg:grid-cols-[0.8fr_1.2fr] lg:px-8">
           <div className="reveal">
             <SectionLabel light>تماس و مشاوره</SectionLabel>
-            <h2 className="mt-5 text-3xl font-extrabold leading-[1.5] sm:text-4xl">درباره نیاز فنی پروژه شما گفت‌وگو کنیم.</h2>
+            <h2 className="mt-5 text-3xl font-extrabold leading-[1.5] sm:text-4xl">مسئله صنعتی شما، نقطه شروع همکاری ماست.</h2>
             <p className="mt-5 leading-8 text-primary-foreground/70">برای شروع، مشخصات سیال، دبی، دما و فشار کاری را در اختیار ما قرار دهید تا امکان بررسی اولیه فراهم شود.</p>
             <div className="mt-9 space-y-4">
               <div className="flex items-center gap-4 border-t border-primary-foreground/15 pt-4">
@@ -488,11 +497,11 @@ function Index() {
 
       <footer className="bg-foreground py-10 text-primary-foreground">
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-6 px-5 text-center sm:flex-row sm:text-right lg:px-8">
-          <div className="flex items-center gap-3">
-            <span className="grid size-10 place-items-center rounded-sm bg-primary text-primary-foreground"><Layers3 className="size-5" /></span>
-            <div><p className="font-bold">مهندسی انتقال حرارت</p><p className="mt-1 text-[10px] text-primary-foreground/45">نام و نشان موقت</p></div>
+          <div className="brand-lockup brand-lockup-light">
+            <BrandMark />
+            <div><p className="font-bold">آرسام انرژی صنعت</p><p className="mt-1 text-[10px] text-primary-foreground/45">ARSAM ENERGY SANAT</p></div>
           </div>
-          <p className="text-xs text-primary-foreground/45">تمام اطلاعات تماس و هویت تجاری پس از نهایی‌شدن جایگزین می‌شوند.</p>
+          <p className="text-xs text-primary-foreground/45">طراحی و ساخت تجهیزات حرارتی و فرایندی</p>
         </div>
       </footer>
     </main>
@@ -505,6 +514,15 @@ function SectionLabel({ children, light = false }: { children: string; light?: b
       <span className={`h-px w-9 ${light ? "bg-safety" : "bg-industrial"}`} />
       {children}
     </div>
+  );
+}
+
+function BrandMark({ decorative = false }: { decorative?: boolean }) {
+  return (
+    <span className={decorative ? "brand-mark brand-mark-decorative" : "brand-mark"} aria-hidden="true">
+      <i className="brand-mark-blue" />
+      <i className="brand-mark-orange" />
+    </span>
   );
 }
 
