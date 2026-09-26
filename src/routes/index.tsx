@@ -30,6 +30,7 @@ const brandSymbolAsset = { url: brandSymbolUrl };
 import brandLockupUrl from "../assets/arsam-logo-full.png";
 const brandLockupAsset = { url: brandLockupUrl };
 import { Button } from "../components/ui/button";
+import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -149,8 +150,34 @@ function Index() {
     return () => observer.disconnect();
   }, []);
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const [sending, setSending] = useState(false);
+  const [submitError, setSubmitError] = useState(false);
+
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    const form = event.currentTarget;
+    const data = new FormData(form);
+    const name = String(data.get("name") ?? "").trim();
+    const phone = String(data.get("phone") ?? "").trim();
+    const company = String(data.get("company") ?? "").trim();
+    const industry = String(data.get("industry") ?? "").trim();
+    const message = String(data.get("message") ?? "").trim();
+    if (!name || !phone || !message) {
+      setSubmitError(true);
+      return;
+    }
+    setSending(true);
+    setSubmitError(false);
+    const subject = [company, industry].filter(Boolean).join(" — ") || null;
+    const { error } = await supabase
+      .from("contact_messages")
+      .insert({ name, phone, subject, message });
+    setSending(false);
+    if (error) {
+      setSubmitError(true);
+      return;
+    }
+    form.reset();
     setSubmitted(true);
   };
 
@@ -478,11 +505,10 @@ function Index() {
             <div className="mt-9 space-y-4">
               <div className="flex items-center gap-4 border-t border-primary-foreground/15 pt-4">
                 <Phone className="size-5 text-safety" />
-                <div><p className="text-xs text-primary-foreground/50">شماره تماس</p><p className="mt-1 text-sm font-bold">پس از انتخاب شماره شرکت اضافه می‌شود</p></div>
-              </div>
-              <div className="flex items-center gap-4 border-t border-primary-foreground/15 pt-4">
-                <Mail className="size-5 text-safety" />
-                <div><p className="text-xs text-primary-foreground/50">ایمیل</p><p className="mt-1 text-sm font-bold">پس از ثبت دامنه اضافه می‌شود</p></div>
+                <div>
+                  <p className="text-xs text-primary-foreground/50">شماره تماس</p>
+                  <a href="tel:+989014587151" dir="ltr" className="mt-1 block text-sm font-bold transition-colors hover:text-safety">۰۹۰۱ ۴۵۸ ۷۱ ۵۱</a>
+                </div>
               </div>
             </div>
           </div>
@@ -500,10 +526,19 @@ function Index() {
             {submitted ? (
               <div className="mt-6 flex items-start gap-3 rounded-lg border border-industrial bg-secondary p-4 text-sm leading-7">
                 <CheckCircle2 className="mt-1 size-5 shrink-0 text-industrial" />
-                فرم نمایشی است؛ پس از تهیه دامنه و راه ارتباطی، ارسال واقعی پیام فعال می‌شود.
+                پیام شما ثبت شد؛ به‌زودی برای بررسی نیاز پروژه با شما تماس می‌گیریم.
               </div>
             ) : (
-              <Button type="submit" variant="accent" size="lg" className="mt-6 w-full sm:w-auto">ثبت درخواست بررسی <ArrowLeft className="size-5" /></Button>
+              <>
+                {submitError && (
+                  <p className="mt-5 rounded-lg border border-destructive/40 bg-destructive/10 p-3 text-sm text-destructive">
+                    لطفاً نام، شماره تماس و توضیح پروژه را کامل کنید و دوباره تلاش کنید.
+                  </p>
+                )}
+                <Button type="submit" variant="accent" size="lg" disabled={sending} className="mt-6 w-full sm:w-auto">
+                  {sending ? "در حال ارسال..." : "ثبت درخواست بررسی"} <ArrowLeft className="size-5" />
+                </Button>
+              </>
             )}
           </form>
         </div>
