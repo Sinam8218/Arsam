@@ -7,7 +7,7 @@ import {
   ClipboardCheck,
   Factory,
   Flame,
-  Gauge,
+  FlaskConical,
   Layers3,
   Mail,
   Menu,
@@ -15,7 +15,7 @@ import {
   Phone,
   Settings2,
   ShieldCheck,
-  Snowflake,
+  Pill,
   Sparkles,
   Wrench,
   X,
@@ -78,13 +78,36 @@ const services = [
   },
 ];
 
-const industries = [
-  { icon: Flame, label: "نفت، گاز و پتروشیمی" },
-  { icon: Gauge, label: "نیروگاه و تولید انرژی" },
-  { icon: Snowflake, label: "تبرید و تهویه صنعتی" },
-  { icon: Sparkles, label: "صنایع غذایی و دارویی" },
-  { icon: Building2, label: "تأسیسات و ساختمان" },
-  { icon: Wrench, label: "فرایندهای عمومی صنعت" },
+const industryGroups = [
+  {
+    icon: Flame,
+    title: "انرژی",
+    items: ["پالایش نفت", "تولید قیر", "تولید اتانول"],
+  },
+  {
+    icon: Building2,
+    title: "تأسیسات، گرمایش و تبرید",
+    items: [
+      "تأمین آب گرم مصرفی (DHW)",
+      "گرمایش استخر، جکوزی و سونا",
+      "حرارت مرکزی؛ گرمایش آب رادیاتور و فن‌کویل‌ها",
+    ],
+  },
+  {
+    icon: Sparkles,
+    title: "صنایع غذایی",
+    items: ["فراوری محصولات لبنی", "فراوری روغن خوراکی (Edible Oil Processing)"],
+  },
+  {
+    icon: FlaskConical,
+    title: "صنایع شیمیایی",
+    items: ["فرایندهای شیمیایی و پتروشیمی"],
+  },
+  {
+    icon: Pill,
+    title: "صنایع دارویی",
+    items: ["فرایندهای تولید دارو"],
+  },
 ];
 
 const process = [
@@ -257,6 +280,18 @@ function Index() {
         </div>
       </section>
 
+      <section className="bg-foreground py-16 text-primary-foreground lg:py-20">
+        <div className="reveal mx-auto max-w-7xl px-5 lg:px-8">
+          <div className="flex items-center gap-3 text-sm font-semibold text-safety">
+            <span className="h-px w-12 bg-safety" />
+            چرا این مجموعه
+          </div>
+          <p className="mt-6 max-w-4xl text-2xl font-extrabold leading-[1.8] sm:text-3xl lg:text-4xl">
+            مشکلات صنعتی شما و مسائلی که برای حل آن‌ها به یک تیم مهندسی قدرتمند نیاز دارید، <span className="text-safety">اینجا حل می‌شود.</span>
+          </p>
+        </div>
+      </section>
+
       <section id="services" className="industrial-grid bg-surface py-20 lg:py-28">
         <div className="mx-auto max-w-7xl px-5 lg:px-8">
           <div className="reveal max-w-2xl">
@@ -342,16 +377,28 @@ function Index() {
         <div className="mx-auto max-w-7xl px-5 lg:px-8">
           <div className="reveal grid gap-7 lg:grid-cols-2 lg:items-end">
             <div>
-              <SectionLabel>صنایع هدف</SectionLabel>
-              <h2 className="mt-5 text-3xl font-extrabold sm:text-4xl">برای طیف گسترده‌ای از فرایندهای صنعتی</h2>
+              <SectionLabel>صنایع و کاربردها</SectionLabel>
+              <h2 className="mt-5 text-3xl font-extrabold sm:text-4xl">کاربردها در صنایع مختلف</h2>
             </div>
-            <p className="leading-8 text-muted-foreground lg:max-w-lg lg:justify-self-end">مبدل‌های صفحه‌ای در هر جایی که تبادل حرارت دقیق، ابعاد فشرده و دسترسی مناسب اهمیت دارد، یک راهکار مؤثر هستند.</p>
+            <p className="leading-8 text-muted-foreground lg:max-w-lg lg:justify-self-end">از تأمین آب گرم مصرفی تا فرایندهای پالایش نفت؛ مبدل‌های صفحه‌ای هر جا که تبادل حرارت دقیق و ابعاد فشرده اهمیت دارد به کار می‌روند.</p>
           </div>
-          <div className="mt-12 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {industries.map(({ icon: Icon, label }, index) => (
-              <div key={label} className="reveal flex min-h-28 items-center gap-5 border border-border bg-surface p-6 transition-all hover:-translate-y-1 hover:border-industrial" style={{ animationDelay: `${index * 70}ms` }}>
-                <span className="grid size-12 shrink-0 place-items-center rounded-sm bg-background text-industrial"><Icon className="size-6" strokeWidth={1.7} /></span>
-                <h3 className="font-bold">{label}</h3>
+          <div className="mt-12 grid gap-px overflow-hidden rounded-sm border border-border bg-border sm:grid-cols-2 lg:grid-cols-3">
+            {industryGroups.map(({ icon: Icon, title, items }, index) => (
+              <div key={title} className="reveal bg-surface p-7" style={{ animationDelay: `${index * 80}ms` }}>
+                <div className="flex items-center gap-4">
+                  <span className="grid size-11 shrink-0 place-items-center rounded-sm bg-background text-industrial">
+                    <Icon className="size-5" strokeWidth={1.7} />
+                  </span>
+                  <h3 className="font-extrabold">{title}</h3>
+                </div>
+                <ul className="mt-5 space-y-2.5">
+                  {items.map((item) => (
+                    <li key={item} className="flex items-start gap-2.5 text-sm leading-7 text-muted-foreground">
+                      <span className="mt-3 size-1.5 shrink-0 rounded-full bg-safety" />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
               </div>
             ))}
           </div>
@@ -390,10 +437,10 @@ function Index() {
             <SectionLabel>درباره مجموعه</SectionLabel>
             <h2 className="mt-5 text-3xl font-extrabold leading-[1.5] sm:text-4xl">تمرکز تخصصی بر مبدل‌های حرارتی صفحه‌ای</h2>
             <p className="mt-6 leading-9 text-muted-foreground">
-              این مجموعه با رویکردی مهندسی در زمینه طراحی، تولید و توسعه فناوری مبدل‌های حرارتی صفحه‌ای فعالیت می‌کند. ساختار کار بر شناخت دقیق مسئله، طراحی قابل دفاع و تولید کنترل‌شده استوار است.
+              تیم ما دانش‌آموختگان مهندسی مکانیک در گرایش‌های طراحی کاربردی، ساخت و تولید و حرارت و سیالات است؛ با سابقه کار در صنایع مختلف حرارتی و در شرکت تولیدکننده مبدل حرارتی.
             </p>
             <p className="mt-4 rounded-sm border-r-2 border-safety bg-surface p-4 text-sm leading-7 text-muted-foreground">
-              این متن اولیه است و پس از مشخص شدن نام، سوابق، تیم و امکانات واقعی شرکت با اطلاعات قطعی جایگزین می‌شود.
+              نام و نشان تجاری مجموعه پس از نهایی‌شدن جایگزین می‌شود.
             </p>
           </div>
         </div>
