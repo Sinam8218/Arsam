@@ -201,8 +201,8 @@
   align-items: center;
 }
 
-.brand-lockup-image { display: block; width: 10.5rem; height: auto; }
-.brand-lockup-image-footer { width: 9.5rem; border-radius: var(--radius-lg); }
+.brand-lockup-image { display: block; width: 10.5rem; height: auto; object-fit: contain; }
+.brand-lockup-image-footer { width: 9.5rem; }
 
 .brand-name strong,
 .brand-name small { display: block; }
