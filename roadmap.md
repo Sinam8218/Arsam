@@ -4,3 +4,6 @@
 - [x] Build the complete one-page company website
 - [x] Add smooth scroll interactions and mobile navigation
 - [x] Verify desktop and mobile presentation
+- [x] Rebrand the site as Arsam Energy Sanat using the supplied identity direction
+- [x] Refine visual hierarchy, motion, and Persian RTL presentation
+- [x] Verify the redesigned experience on desktop and mobile
