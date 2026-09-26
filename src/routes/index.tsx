@@ -183,7 +183,7 @@ function Index() {
           <Button
             variant="ghost"
             size="icon"
-            className="lg:hidden"
+            className="border border-border bg-surface text-primary lg:hidden"
             aria-label={menuOpen ? "بستن منو" : "باز کردن منو"}
             onClick={() => setMenuOpen((value) => !value)}
           >
