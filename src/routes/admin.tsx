@@ -39,7 +39,7 @@ const formatDate = (iso: string) =>
     }).format(new Date(iso)),
   );
 
-const getAuthErrorMessage = (error: { code?: string; message?: string }) => {
+const getAuthErrorMessage = (error: { code: unknown; message: string }) => {
   if (error.code === "email_provider_disabled" || error.message?.includes("Email logins are disabled")) {
     return "ورود با ایمیل در تنظیمات سرویس غیرفعال است. لطفاً روش Email را در بخش Authentication روشن کنید.";
   }
