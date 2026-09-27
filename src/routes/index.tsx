@@ -151,7 +151,7 @@ function Index() {
   }, []);
 
   const [sending, setSending] = useState(false);
-  const [submitError, setSubmitError] = useState(false);
+  const [submitError, setSubmitError] = useState<"empty" | "failed" | null>(null);
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -163,18 +163,19 @@ function Index() {
     const industry = String(data.get("industry") ?? "").trim();
     const message = String(data.get("message") ?? "").trim();
     if (!name || !phone || !message) {
-      setSubmitError(true);
+      setSubmitError("empty");
       return;
     }
     setSending(true);
-    setSubmitError(false);
+    setSubmitError(null);
     const subject = [company, industry].filter(Boolean).join(" — ") || null;
     const { error } = await supabase
       .from("contact_messages")
       .insert({ name, phone, subject, message });
     setSending(false);
     if (error) {
-      setSubmitError(true);
+      console.error("contact_messages insert failed:", error);
+      setSubmitError("failed");
       return;
     }
     form.reset();
@@ -530,9 +531,14 @@ function Index() {
               </div>
             ) : (
               <>
-                {submitError && (
+                {submitError === "empty" && (
                   <p className="mt-5 rounded-lg border border-destructive/40 bg-destructive/10 p-3 text-sm text-destructive">
                     لطفاً نام، شماره تماس و توضیح پروژه را کامل کنید و دوباره تلاش کنید.
+                  </p>
+                )}
+                {submitError === "failed" && (
+                  <p className="mt-5 rounded-lg border border-destructive/40 bg-destructive/10 p-3 text-sm text-destructive">
+                    ارسال پیام با خطا مواجه شد. لطفاً دوباره تلاش کنید یا با شماره ۰۹۰۱ ۴۵۸ ۷۱ ۵۱ تماس بگیرید.
                   </p>
                 )}
                 <Button type="submit" variant="accent" size="lg" disabled={sending} className="mt-6 w-full sm:w-auto">
