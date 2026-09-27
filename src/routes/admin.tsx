@@ -124,12 +124,12 @@ function AdminPage() {
     setMessagesError(null);
     const { data, error } = await supabase
       .from("contact_messages")
-      .select("id, name, phone, subject, message, status, created_at")
+      .select("*")
       .order("created_at", { ascending: false });
     if (error) {
       setMessagesError("خطا در دریافت پیام‌ها. لطفاً دوباره تلاش کنید.");
     } else {
-      setMessages((data ?? []) as ContactMessage[]);
+      setMessages((data ?? []) as unknown as ContactMessage[]);
     }
     setMessagesLoading(false);
   };
@@ -194,7 +194,10 @@ function AdminPage() {
   const handleSetStatus = async (id: string, status: MessageStatus) => {
     setUpdatingStatusId(id);
     setActionError(null);
-    const { error } = await supabase.from("contact_messages").update({ status }).eq("id", id);
+    const { error } = await supabase
+      .from("contact_messages")
+      .update({ status } as Record<string, unknown>)
+      .eq("id", id);
     if (error) {
       setActionError("تغییر وضعیت انجام نشد. دسترسی ویرایش در دیتابیس فعال نیست یا دوباره تلاش کنید.");
     } else {
