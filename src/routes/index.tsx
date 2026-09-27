@@ -603,7 +603,7 @@ function Field({
   return (
     <label className="block text-sm font-bold">
       {label}
-      <input name={name} inputMode={inputMode} placeholder={placeholder} className="mt-2 h-12 w-full rounded-lg border border-input bg-background px-4 text-sm font-normal outline-none transition-colors placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-ring/20" />
+      <input name={name} inputMode={inputMode} placeholder={placeholder} dir={inputMode === "tel" ? "ltr" : undefined} className={`mt-2 h-12 w-full rounded-lg border border-input bg-background px-4 text-sm font-normal outline-none transition-colors placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-ring/20${inputMode === "tel" ? " text-right" : ""}`} />
     </label>
   );
 }
