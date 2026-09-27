@@ -25,7 +25,7 @@ type ContactMessage = {
   created_at: string;
 };
 
-const faDigits = (value: string) => value.replace(/\d/g, (d) => "۰۱۲۳۴۵۶۷۸۹"[Number(d)]);
+const faDigits = (value: string) => value.replace(/\d/g, (d) => "۰۱۲۳۴۵۶۷۸۹"[Number(d)] ?? d);
 
 const formatDate = (iso: string) =>
   faDigits(
