@@ -196,7 +196,7 @@ function AdminPage() {
     setActionError(null);
     const { error } = await supabase
       .from("contact_messages")
-      .update({ status } as Record<string, unknown>)
+      .update({ status } as never)
       .eq("id", id);
     if (error) {
       setActionError("تغییر وضعیت انجام نشد. دسترسی ویرایش در دیتابیس فعال نیست یا دوباره تلاش کنید.");
