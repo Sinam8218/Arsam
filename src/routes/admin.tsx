@@ -1,8 +1,20 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { FileSpreadsheet, Loader2, LogOut, Pencil, RefreshCw, Trash2, X } from "lucide-react";
+import {
+  Archive,
+  CheckCircle2,
+  FileSpreadsheet,
+  Loader2,
+  LogOut,
+  Pencil,
+  PhoneCall,
+  RefreshCw,
+  Sparkles,
+  Trash2,
+  X,
+} from "lucide-react";
 import * as XLSX from "xlsx";
 
 export const Route = createFileRoute("/admin")({
@@ -21,14 +33,45 @@ export const Route = createFileRoute("/admin")({
   component: AdminPage,
 });
 
+type MessageStatus = "new" | "in_progress" | "completed" | "archived";
+
 type ContactMessage = {
   id: string;
   name: string;
   phone: string;
   subject: string | null;
   message: string;
+  status: MessageStatus;
   created_at: string;
 };
+
+const STATUS_META: Record<
+  MessageStatus,
+  { label: string; badgeClass: string; dotClass: string }
+> = {
+  new: {
+    label: "جدید",
+    badgeClass: "bg-amber-500/10 text-amber-600 border-amber-500/30",
+    dotClass: "bg-amber-500",
+  },
+  in_progress: {
+    label: "در حال پیگیری",
+    badgeClass: "bg-blue-500/10 text-blue-600 border-blue-500/30",
+    dotClass: "bg-blue-500",
+  },
+  completed: {
+    label: "تکمیل شده",
+    badgeClass: "bg-emerald-500/10 text-emerald-600 border-emerald-500/30",
+    dotClass: "bg-emerald-500",
+  },
+  archived: {
+    label: "آرشیو",
+    badgeClass: "bg-muted text-muted-foreground border-border",
+    dotClass: "bg-muted-foreground",
+  },
+};
+
+const STATUS_ORDER: MessageStatus[] = ["new", "in_progress", "completed", "archived"];
 
 const faDigits = (value: string) => value.replace(/\d/g, (d) => "۰۱۲۳۴۵۶۷۸۹"[Number(d)] ?? d);
 
@@ -67,11 +110,13 @@ function AdminPage() {
   const [messages, setMessages] = useState<ContactMessage[]>([]);
   const [messagesLoading, setMessagesLoading] = useState(false);
   const [messagesError, setMessagesError] = useState<string | null>(null);
+  const [statusFilter, setStatusFilter] = useState<MessageStatus | "all">("all");
 
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
   const [editing, setEditing] = useState<ContactMessage | null>(null);
   const [savingEdit, setSavingEdit] = useState(false);
+  const [updatingStatusId, setUpdatingStatusId] = useState<string | null>(null);
   const [actionError, setActionError] = useState<string | null>(null);
 
   const loadMessages = async () => {
@@ -79,12 +124,12 @@ function AdminPage() {
     setMessagesError(null);
     const { data, error } = await supabase
       .from("contact_messages")
-      .select("id, name, phone, subject, message, created_at")
+      .select("*")
       .order("created_at", { ascending: false });
     if (error) {
       setMessagesError("خطا در دریافت پیام‌ها. لطفاً دوباره تلاش کنید.");
     } else {
-      setMessages(data ?? []);
+      setMessages((data ?? []) as unknown as ContactMessage[]);
     }
     setMessagesLoading(false);
   };
@@ -112,6 +157,24 @@ function AdminPage() {
     if (loggedIn) void loadMessages();
   }, [loggedIn]);
 
+  const statusCounts = useMemo(() => {
+    const counts: Record<MessageStatus, number> = {
+      new: 0,
+      in_progress: 0,
+      completed: 0,
+      archived: 0,
+    };
+    for (const m of messages) {
+      if (counts[m.status] !== undefined) counts[m.status] += 1;
+    }
+    return counts;
+  }, [messages]);
+
+  const filteredMessages = useMemo(
+    () => (statusFilter === "all" ? messages : messages.filter((m) => m.status === statusFilter)),
+    [messages, statusFilter],
+  );
+
   const handleLogin = async (event: React.FormEvent) => {
     event.preventDefault();
     setAuthLoading(true);
@@ -126,6 +189,21 @@ function AdminPage() {
   const handleLogout = async () => {
     await supabase.auth.signOut();
     setMessages([]);
+  };
+
+  const handleSetStatus = async (id: string, status: MessageStatus) => {
+    setUpdatingStatusId(id);
+    setActionError(null);
+    const { error } = await supabase
+      .from("contact_messages")
+      .update({ status } as never)
+      .eq("id", id);
+    if (error) {
+      setActionError("تغییر وضعیت انجام نشد. دسترسی ویرایش در دیتابیس فعال نیست یا دوباره تلاش کنید.");
+    } else {
+      setMessages((prev) => prev.map((m) => (m.id === id ? { ...m, status } : m)));
+    }
+    setUpdatingStatusId(null);
   };
 
   const handleDelete = async (id: string) => {
@@ -165,15 +243,16 @@ function AdminPage() {
   };
 
   const handleExportExcel = () => {
-    const rows = messages.map((m) => ({
+    const rows = filteredMessages.map((m) => ({
       "نام": m.name,
       "شماره تماس": m.phone,
       "موضوع": m.subject ?? "",
       "پیام": m.message,
+      "وضعیت": STATUS_META[m.status]?.label ?? m.status,
       "تاریخ ثبت": formatDate(m.created_at),
     }));
     const worksheet = XLSX.utils.json_to_sheet(rows);
-    worksheet["!cols"] = [{ wch: 20 }, { wch: 16 }, { wch: 24 }, { wch: 60 }, { wch: 22 }];
+    worksheet["!cols"] = [{ wch: 20 }, { wch: 16 }, { wch: 24 }, { wch: 60 }, { wch: 14 }, { wch: 22 }];
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, "پیام‌ها");
     XLSX.writeFile(workbook, "arsam-contact-messages.xlsx");
@@ -251,7 +330,7 @@ function AdminPage() {
               variant="outline"
               size="sm"
               onClick={handleExportExcel}
-              disabled={messages.length === 0}
+              disabled={filteredMessages.length === 0}
             >
               <FileSpreadsheet className="size-4" />
               خروجی اکسل
@@ -273,6 +352,35 @@ function AdminPage() {
       </header>
 
       <main className="mx-auto max-w-5xl px-6 py-8">
+        <div className="mb-6 flex flex-wrap items-center gap-2">
+          <button
+            type="button"
+            onClick={() => setStatusFilter("all")}
+            className={`rounded-full border px-4 py-1.5 text-sm font-medium transition ${
+              statusFilter === "all"
+                ? "border-primary bg-primary text-primary-foreground"
+                : "border-border bg-card text-muted-foreground hover:border-primary/40 hover:text-foreground"
+            }`}
+          >
+            همه ({faDigits(String(messages.length))})
+          </button>
+          {STATUS_ORDER.map((status) => (
+            <button
+              key={status}
+              type="button"
+              onClick={() => setStatusFilter(status)}
+              className={`flex items-center gap-2 rounded-full border px-4 py-1.5 text-sm font-medium transition ${
+                statusFilter === status
+                  ? "border-primary bg-primary text-primary-foreground"
+                  : "border-border bg-card text-muted-foreground hover:border-primary/40 hover:text-foreground"
+              }`}
+            >
+              <span className={`size-2 rounded-full ${STATUS_META[status].dotClass}`} />
+              {STATUS_META[status].label} ({faDigits(String(statusCounts[status]))})
+            </button>
+          ))}
+        </div>
+
         {messagesError ? (
           <div className="rounded-xl border border-destructive/30 bg-destructive/10 p-4 text-sm text-destructive">
             {messagesError}
@@ -285,17 +393,19 @@ function AdminPage() {
           </div>
         ) : null}
 
-        {!messagesLoading && !messagesError && messages.length === 0 ? (
+        {!messagesLoading && !messagesError && filteredMessages.length === 0 ? (
           <div className="rounded-2xl border border-dashed border-border bg-card p-12 text-center text-muted-foreground">
-            هنوز پیامی ثبت نشده است.
+            {statusFilter === "all"
+              ? "هنوز پیامی ثبت نشده است."
+              : `پیامی با وضعیت «${STATUS_META[statusFilter].label}» وجود ندارد.`}
           </div>
         ) : null}
 
         <ul className="space-y-4">
-          {messages.map((item) => (
+          {filteredMessages.map((item) => (
             <li key={item.id} className="rounded-2xl border border-border bg-card p-6 shadow-sm">
               <div className="flex flex-wrap items-center justify-between gap-2">
-                <div className="flex items-center gap-3">
+                <div className="flex flex-wrap items-center gap-3">
                   <span className="text-base font-bold text-foreground">{item.name}</span>
                   <a
                     href={`tel:${item.phone}`}
@@ -304,6 +414,12 @@ function AdminPage() {
                   >
                     {faDigits(item.phone)}
                   </a>
+                  <span
+                    className={`flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-medium ${STATUS_META[item.status]?.badgeClass ?? ""}`}
+                  >
+                    <span className={`size-1.5 rounded-full ${STATUS_META[item.status]?.dotClass ?? ""}`} />
+                    {STATUS_META[item.status]?.label ?? item.status}
+                  </span>
                 </div>
                 <div className="flex items-center gap-2">
                   <time className="text-xs text-muted-foreground">{formatDate(item.created_at)}</time>
@@ -334,6 +450,34 @@ function AdminPage() {
               <p className="mt-2 whitespace-pre-line text-sm leading-7 text-muted-foreground">
                 {item.message}
               </p>
+              <div className="mt-4 flex flex-wrap items-center gap-2 border-t border-border pt-4">
+                <span className="text-xs font-medium text-muted-foreground">تغییر وضعیت:</span>
+                {updatingStatusId === item.id ? (
+                  <Loader2 className="size-4 animate-spin text-primary" />
+                ) : (
+                  STATUS_ORDER.filter((s) => s !== item.status).map((status) => {
+                    const Icon =
+                      status === "new"
+                        ? Sparkles
+                        : status === "in_progress"
+                          ? PhoneCall
+                          : status === "completed"
+                            ? CheckCircle2
+                            : Archive;
+                    return (
+                      <button
+                        key={status}
+                        type="button"
+                        onClick={() => void handleSetStatus(item.id, status)}
+                        className={`flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-medium transition hover:opacity-80 ${STATUS_META[status].badgeClass}`}
+                      >
+                        <Icon className="size-3.5" />
+                        {STATUS_META[status].label}
+                      </button>
+                    );
+                  })
+                )}
+              </div>
             </li>
           ))}
         </ul>
