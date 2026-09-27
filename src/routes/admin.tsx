@@ -2,7 +2,8 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { Loader2, LogOut, RefreshCw } from "lucide-react";
+import { FileSpreadsheet, Loader2, LogOut, Pencil, RefreshCw, Trash2, X } from "lucide-react";
+import * as XLSX from "xlsx";
 
 export const Route = createFileRoute("/admin")({
   ssr: false,
@@ -67,6 +68,12 @@ function AdminPage() {
   const [messagesLoading, setMessagesLoading] = useState(false);
   const [messagesError, setMessagesError] = useState<string | null>(null);
 
+  const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
+  const [editing, setEditing] = useState<ContactMessage | null>(null);
+  const [savingEdit, setSavingEdit] = useState(false);
+  const [actionError, setActionError] = useState<string | null>(null);
+
   const loadMessages = async () => {
     setMessagesLoading(true);
     setMessagesError(null);
@@ -119,6 +126,57 @@ function AdminPage() {
   const handleLogout = async () => {
     await supabase.auth.signOut();
     setMessages([]);
+  };
+
+  const handleDelete = async (id: string) => {
+    setDeletingId(id);
+    setActionError(null);
+    const { error } = await supabase.from("contact_messages").delete().eq("id", id);
+    if (error) {
+      setActionError("حذف پیام انجام نشد. دسترسی حذف در دیتابیس فعال نیست یا دوباره تلاش کنید.");
+    } else {
+      setMessages((prev) => prev.filter((m) => m.id !== id));
+    }
+    setDeletingId(null);
+    setConfirmDeleteId(null);
+  };
+
+  const handleSaveEdit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    if (!editing) return;
+    setSavingEdit(true);
+    setActionError(null);
+    const { error } = await supabase
+      .from("contact_messages")
+      .update({
+        name: editing.name,
+        phone: editing.phone,
+        subject: editing.subject,
+        message: editing.message,
+      })
+      .eq("id", editing.id);
+    if (error) {
+      setActionError("ویرایش پیام انجام نشد. دسترسی ویرایش در دیتابیس فعال نیست یا دوباره تلاش کنید.");
+    } else {
+      setMessages((prev) => prev.map((m) => (m.id === editing.id ? editing : m)));
+      setEditing(null);
+    }
+    setSavingEdit(false);
+  };
+
+  const handleExportExcel = () => {
+    const rows = messages.map((m) => ({
+      "نام": m.name,
+      "شماره تماس": m.phone,
+      "موضوع": m.subject ?? "",
+      "پیام": m.message,
+      "تاریخ ثبت": formatDate(m.created_at),
+    }));
+    const worksheet = XLSX.utils.json_to_sheet(rows);
+    worksheet["!cols"] = [{ wch: 20 }, { wch: 16 }, { wch: 24 }, { wch: 60 }, { wch: 22 }];
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "پیام‌ها");
+    XLSX.writeFile(workbook, "arsam-contact-messages.xlsx");
   };
 
   if (checkingSession) {
@@ -186,9 +244,18 @@ function AdminPage() {
   return (
     <div dir="rtl" className="min-h-screen bg-background">
       <header className="sticky top-0 z-10 border-b border-border bg-card/90 backdrop-blur">
-        <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
+        <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-3 px-6 py-4">
           <h1 className="text-xl font-bold text-foreground">پیام‌های فرم تماس</h1>
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleExportExcel}
+              disabled={messages.length === 0}
+            >
+              <FileSpreadsheet className="size-4" />
+              خروجی اکسل
+            </Button>
             <Button variant="outline" size="sm" onClick={() => void loadMessages()} disabled={messagesLoading}>
               {messagesLoading ? (
                 <Loader2 className="size-4 animate-spin" />
@@ -212,6 +279,12 @@ function AdminPage() {
           </div>
         ) : null}
 
+        {actionError ? (
+          <div className="mb-4 rounded-xl border border-destructive/30 bg-destructive/10 p-4 text-sm text-destructive">
+            {actionError}
+          </div>
+        ) : null}
+
         {!messagesLoading && !messagesError && messages.length === 0 ? (
           <div className="rounded-2xl border border-dashed border-border bg-card p-12 text-center text-muted-foreground">
             هنوز پیامی ثبت نشده است.
@@ -232,7 +305,28 @@ function AdminPage() {
                     {faDigits(item.phone)}
                   </a>
                 </div>
-                <time className="text-xs text-muted-foreground">{formatDate(item.created_at)}</time>
+                <div className="flex items-center gap-2">
+                  <time className="text-xs text-muted-foreground">{formatDate(item.created_at)}</time>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setEditing({ ...item })}
+                    aria-label="ویرایش پیام"
+                  >
+                    <Pencil className="size-4" />
+                    ویرایش
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="border-destructive/40 text-destructive hover:bg-destructive/10"
+                    onClick={() => setConfirmDeleteId(item.id)}
+                    aria-label="حذف پیام"
+                  >
+                    <Trash2 className="size-4" />
+                    حذف
+                  </Button>
+                </div>
               </div>
               {item.subject ? (
                 <p className="mt-3 text-sm font-medium text-foreground">موضوع: {item.subject}</p>
@@ -244,6 +338,115 @@ function AdminPage() {
           ))}
         </ul>
       </main>
+
+      {confirmDeleteId ? (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-foreground/40 px-6 backdrop-blur-sm">
+          <div className="w-full max-w-sm rounded-2xl border border-border bg-card p-6 shadow-lg">
+            <h2 className="text-lg font-bold text-foreground">حذف پیام</h2>
+            <p className="mt-2 text-sm text-muted-foreground">
+              آیا از حذف این پیام مطمئن هستید؟ این عمل قابل بازگشت نیست.
+            </p>
+            <div className="mt-6 flex items-center justify-end gap-2">
+              <Button variant="ghost" size="sm" onClick={() => setConfirmDeleteId(null)}>
+                انصراف
+              </Button>
+              <Button
+                variant="destructive"
+                size="sm"
+                disabled={deletingId === confirmDeleteId}
+                onClick={() => void handleDelete(confirmDeleteId)}
+              >
+                {deletingId === confirmDeleteId ? (
+                  <Loader2 className="size-4 animate-spin" />
+                ) : (
+                  <Trash2 className="size-4" />
+                )}
+                حذف شود
+              </Button>
+            </div>
+          </div>
+        </div>
+      ) : null}
+
+      {editing ? (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-foreground/40 px-6 backdrop-blur-sm">
+          <div className="w-full max-w-lg rounded-2xl border border-border bg-card p-6 shadow-lg">
+            <div className="flex items-center justify-between">
+              <h2 className="text-lg font-bold text-foreground">ویرایش پیام</h2>
+              <button
+                type="button"
+                onClick={() => setEditing(null)}
+                className="rounded-full p-1 text-muted-foreground transition hover:bg-muted hover:text-foreground"
+                aria-label="بستن"
+              >
+                <X className="size-5" />
+              </button>
+            </div>
+            <form onSubmit={handleSaveEdit} className="mt-4 space-y-4">
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div className="space-y-2">
+                  <label htmlFor="edit-name" className="text-sm font-medium text-foreground">
+                    نام
+                  </label>
+                  <input
+                    id="edit-name"
+                    required
+                    value={editing.name}
+                    onChange={(e) => setEditing({ ...editing, name: e.target.value })}
+                    className="w-full rounded-lg border border-input bg-background px-4 py-2.5 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label htmlFor="edit-phone" className="text-sm font-medium text-foreground">
+                    شماره تماس
+                  </label>
+                  <input
+                    id="edit-phone"
+                    dir="ltr"
+                    required
+                    value={editing.phone}
+                    onChange={(e) => setEditing({ ...editing, phone: e.target.value })}
+                    className="w-full rounded-lg border border-input bg-background px-4 py-2.5 text-left text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20"
+                  />
+                </div>
+              </div>
+              <div className="space-y-2">
+                <label htmlFor="edit-subject" className="text-sm font-medium text-foreground">
+                  موضوع
+                </label>
+                <input
+                  id="edit-subject"
+                  value={editing.subject ?? ""}
+                  onChange={(e) => setEditing({ ...editing, subject: e.target.value })}
+                  className="w-full rounded-lg border border-input bg-background px-4 py-2.5 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20"
+                />
+              </div>
+              <div className="space-y-2">
+                <label htmlFor="edit-message" className="text-sm font-medium text-foreground">
+                  پیام
+                </label>
+                <textarea
+                  id="edit-message"
+                  required
+                  rows={5}
+                  value={editing.message}
+                  onChange={(e) => setEditing({ ...editing, message: e.target.value })}
+                  className="w-full rounded-lg border border-input bg-background px-4 py-2.5 text-sm leading-7 outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20"
+                />
+              </div>
+              <div className="flex items-center justify-end gap-2">
+                <Button type="button" variant="ghost" size="sm" onClick={() => setEditing(null)}>
+                  انصراف
+                </Button>
+                <Button type="submit" size="sm" disabled={savingEdit}>
+                  {savingEdit ? <Loader2 className="size-4 animate-spin" /> : null}
+                  ذخیره تغییرات
+                </Button>
+              </div>
+            </form>
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 }
