@@ -10,6 +10,10 @@ export const Route = createFileRoute("/admin")({
     meta: [
       { title: "پنل مدیریت پیام‌ها | آرسام انرژی صنعت" },
       { name: "description", content: "مشاهده و مدیریت پیام‌های ارسال‌شده از فرم تماس وب‌سایت آرسام انرژی صنعت." },
+      { property: "og:title", content: "پنل مدیریت پیام‌ها | آرسام انرژی صنعت" },
+      { property: "og:description", content: "ورود امن مدیر برای مشاهده پیام‌های وب‌سایت آرسام انرژی صنعت." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
       { name: "robots", content: "noindex, nofollow" },
     ],
   }),
@@ -34,6 +38,22 @@ const formatDate = (iso: string) =>
       timeStyle: "short",
     }).format(new Date(iso)),
   );
+
+const getAuthErrorMessage = (error: { code: unknown; message: string }) => {
+  if (error.code === "email_provider_disabled" || error.message?.includes("Email logins are disabled")) {
+    return "ورود با ایمیل در تنظیمات سرویس غیرفعال است. لطفاً روش Email را در بخش Authentication روشن کنید.";
+  }
+  if (error.code === "email_not_confirmed") {
+    return "ایمیل این حساب هنوز تأیید نشده است.";
+  }
+  if (error.code === "invalid_credentials") {
+    return "ایمیل یا رمز عبور اشتباه است.";
+  }
+  if (error.code === "over_request_rate_limit" || error.code === "over_email_send_rate_limit") {
+    return "تعداد تلاش‌ها زیاد بوده است. چند دقیقه دیگر دوباره امتحان کنید.";
+  }
+  return "ورود انجام نشد. اتصال اینترنت و تنظیمات حساب را بررسی کنید.";
+};
 
 function AdminPage() {
   const [checkingSession, setCheckingSession] = useState(true);
@@ -63,16 +83,22 @@ function AdminPage() {
   };
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data }) => {
-      setLoggedIn(Boolean(data.session));
+    let active = true;
+    void supabase.auth.getUser().then(({ data, error }) => {
+      if (!active) return;
+      setLoggedIn(!error && Boolean(data.user));
       setCheckingSession(false);
     });
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
+    } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event !== "SIGNED_IN" && event !== "SIGNED_OUT" && event !== "USER_UPDATED") return;
       setLoggedIn(Boolean(session));
     });
-    return () => subscription.unsubscribe();
+    return () => {
+      active = false;
+      subscription.unsubscribe();
+    };
   }, []);
 
   useEffect(() => {
@@ -85,7 +111,7 @@ function AdminPage() {
     setAuthError(null);
     const { error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) {
-      setAuthError("ایمیل یا رمز عبور اشتباه است.");
+      setAuthError(getAuthErrorMessage(error));
     }
     setAuthLoading(false);
   };

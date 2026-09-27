@@ -11,3 +11,4 @@
 - [x] Add an industrial image to the applications section
 - [ ] Apply the licensed IRANSansX font files when supplied; Montserrat is active for Latin text
 - [x] Recheck the updated page on desktop and mobile
+- [x] Diagnose admin sign-in and show accurate Persian authentication errors
